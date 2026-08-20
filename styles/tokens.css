@@ -1,0 +1,145 @@
+/**
+ * Design tokens.
+ *
+ * Values derive from a live computed-style audit of the reference, with two
+ * classes of deliberate change, both documented in docs/PROGRESS.md:
+ *   1. text colours darkened until every pair clears WCAG AA at body size
+ *   2. one named signature easing curve instead of bare `ease-out`
+ *
+ * Contrast ratios in the comments are measured against --canvas (#E8E4ED).
+ */
+
+:root {
+  /**
+   * Colours are declared twice on purpose.
+   *
+   * `--x-ch` holds bare `R G B` channels. Tailwind needs that form to support
+   * opacity modifiers — `bg-plum-900/25` compiles to
+   * `rgb(var(--plum-900-ch) / 0.25)`, which only works if the variable is
+   * channels rather than a hex string. Feeding Tailwind a plain `var(--hex)`
+   * makes every `/<alpha>` utility silently emit nothing.
+   *
+   * `--x` is the ready-to-use colour, for hand-written CSS in globals.css.
+   */
+
+  /* ---- Surface -------------------------------------------------------- */
+  --canvas-ch: 232 228 237;
+  --surface-ch: 241 238 244;
+  --raised-ch: 255 255 255;
+  --canvas: rgb(var(--canvas-ch));
+  --surface: rgb(var(--surface-ch));
+  --surface-raised: rgb(var(--raised-ch));
+
+  /* ---- Ink ------------------------------------------------------------ */
+  --plum-900-ch: 28 23 38; /* 13.96:1  AAA */
+  --plum-700-ch: 74 68 88; /*  7.42:1  AAA */
+  --plum-500-ch: 97 88 112; /*  5.34:1  AA — darkened from the reference's #716883 (4.18:1, fails) */
+  --plum-100-ch: 241 238 244;
+  --plum-900: rgb(var(--plum-900-ch));
+  --plum-700: rgb(var(--plum-700-ch));
+  --plum-500: rgb(var(--plum-500-ch));
+  --plum-100: rgb(var(--plum-100-ch));
+
+  /* ---- Aurora hues (gradient system only, never used as text on canvas) - */
+  --aurora-violet-ch: 106 31 134;
+  --aurora-orchid-ch: 154 46 184;
+  --aurora-steel-ch: 76 118 153;
+  --aurora-rose-ch: 159 85 125;
+  --aurora-peri-ch: 138 138 181;
+  --aurora-violet: rgb(var(--aurora-violet-ch));
+  --aurora-orchid: rgb(var(--aurora-orchid-ch));
+  --aurora-steel: rgb(var(--aurora-steel-ch));
+  --aurora-rose: rgb(var(--aurora-rose-ch));
+  --aurora-peri: rgb(var(--aurora-peri-ch));
+
+  /* ---- Per-project accents (AA-safe at 16px) --------------------------- */
+  --accent-steel-ch: 53 97 127; /* 5.29:1 */
+  --accent-orchid-ch: 142 58 174; /* 4.98:1 */
+  --accent-rose-ch: 156 58 95; /* 5.26:1 */
+  --accent-violet-ch: 106 63 158; /* 5.95:1 */
+  --accent-steel: rgb(var(--accent-steel-ch));
+  --accent-orchid: rgb(var(--accent-orchid-ch));
+  --accent-rose: rgb(var(--accent-rose-ch));
+  --accent-violet: rgb(var(--accent-violet-ch));
+
+  /* Tinted forms of the same accents, for the oversized project numerals. */
+  --accent-steel-tint: rgb(var(--accent-steel-ch) / 0.15);
+  --accent-orchid-tint: rgb(var(--accent-orchid-ch) / 0.15);
+  --accent-rose-tint: rgb(var(--accent-rose-ch) / 0.15);
+  --accent-violet-tint: rgb(var(--accent-violet-ch) / 0.15);
+
+  /* ---- Spacing rhythm -------------------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-14: 3.5rem; /* project grid gutter */
+  --space-20: 5rem; /* project row gap, mobile */
+  --space-32: 8rem; /* project row gap, desktop */
+
+  /* ---- Radii ----------------------------------------------------------- */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+
+  /* ---- Elevation -------------------------------------------------------- */
+  --shadow-media: 0 24px 60px rgba(20, 18, 26, 0.12);
+  --shadow-media-hover: 0 32px 80px rgba(20, 18, 26, 0.16);
+  --shadow-header: 0 1px 0 rgba(28, 23, 38, 0.06);
+
+  /* ---- Z-index ---------------------------------------------------------- */
+  --z-grain: 1;
+  --z-content: 10;
+  --z-header: 50;
+  --z-progress: 60;
+
+  /* ---- Motion ------------------------------------------------------------
+   * The reference leans on long `ease-out`. We name one soft expo-out as the
+   * signature curve — same felt deceleration, but consistent and tokenised.
+   */
+  --ease-signature: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --dur-fast: 200ms;
+  --dur-base: 600ms;
+  --dur-slow: 900ms;
+  --dur-veil: 1400ms; /* aurora-depth fade-in */
+
+  --loop-text: 12s; /* auroraText sweep */
+  --loop-depth: 28s; /* heroDepthDrift */
+
+  --stagger-step: 60ms;
+
+  /* ---- Measure ----------------------------------------------------------- */
+  --measure-hero: 896px; /* max-w-4xl */
+  --measure-shell: 1180px; /* projects container */
+  --measure-header: 1280px; /* max-w-7xl */
+}
+
+/**
+ * Reduced motion: collapse every transform-based entrance to a short opacity
+ * fade, stop all ambient loops, and disable smooth scroll. Tested by toggling
+ * the OS setting — the page must remain fully legible and complete.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 150ms;
+    --dur-base: 150ms;
+    --dur-slow: 150ms;
+    --dur-veil: 150ms;
+    --stagger-step: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+    scroll-behavior: auto !important;
+  }
+}

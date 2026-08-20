@@ -1,0 +1,123 @@
+@import '../styles/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--plum-900);
+    font-family: var(--font-crimson), 'Iowan Old Style', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Static mesh, layer 1 of the background system. */
+    background-image:
+      radial-gradient(at 20% 10%, #e8d9ec 0%, rgba(0, 0, 0, 0) 40%),
+      radial-gradient(at 80% 30%, #d4eef8 0%, rgba(0, 0, 0, 0) 50%),
+      radial-gradient(at 90% 80%, #f5dfe6 0%, rgba(0, 0, 0, 0) 60%);
+    background-attachment: fixed;
+  }
+
+  /* A designed focus ring, not the browser default. Visible on any surface. */
+  :focus-visible {
+    outline: 2px solid var(--plum-900);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Hanging punctuation on the editorial column, where supported. */
+  .prose-hang {
+    hanging-punctuation: first last;
+  }
+}
+
+@layer components {
+  /**
+   * Layer 3 — gradient-clipped emphasis text.
+   * Two stacked backgrounds: a soft periwinkle bloom over a long linear sweep.
+   */
+  .aurora-em {
+    background-image:
+      radial-gradient(
+        circle at 50% 38%,
+        rgba(138, 138, 181, 0.5) 0%,
+        rgba(138, 138, 181, 0) 26%
+      ),
+      linear-gradient(
+        108deg,
+        var(--aurora-violet) 0%,
+        var(--aurora-orchid) 22%,
+        var(--aurora-steel) 48%,
+        var(--aurora-rose) 70%,
+        var(--aurora-violet) 100%
+      );
+    background-size:
+      180% 180%,
+      240% 100%;
+    background-position:
+      50% center,
+      18% center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: auroraText var(--loop-text) ease-in-out infinite;
+    /* Italic serif ascenders get clipped by background-clip without this. */
+    padding-inline: 0.06em;
+    margin-inline: -0.06em;
+  }
+
+  /**
+   * Layer 2 — the drifting blurred blobs behind the hero.
+   * Painted into a blurred pseudo-free div so the blur never rasterises text.
+   */
+  .aurora-depth {
+    background-image:
+      radial-gradient(36% 42% at 24% 30%, rgba(154, 46, 184, 0.16), rgba(0, 0, 0, 0) 70%),
+      radial-gradient(40% 46% at 78% 40%, rgba(76, 118, 153, 0.14), rgba(0, 0, 0, 0) 72%),
+      radial-gradient(44% 48% at 52% 82%, rgba(159, 85, 125, 0.15), rgba(0, 0, 0, 0) 74%);
+    filter: blur(64px) saturate(1.12);
+    animation: heroDepthDrift var(--loop-depth) ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /**
+   * Film grain. Implemented as an inline SVG turbulence data URI rather than a
+   * PNG — a few hundred bytes, and it stops the wide flat gradient fields from
+   * banding on 8-bit displays.
+   */
+  .grain::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-grain);
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size var(--dur-fast) var(--ease-signature);
+  }
+
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-em,
+  .aurora-depth {
+    animation: none !important;
+  }
+}
