@@ -1,9 +1,12 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 import { Reveal } from '@/components/motion/Reveal'
 import { profile } from '@/content/profile'
 
-function Icon({ name }: { name: 'linkedin' | 'email' | 'phone' }) {
+function Icon({ name }: { name: 'linkedin' | 'email' }) {
   const common = { width: 22, height: 22, 'aria-hidden': true, focusable: false } as const
 
   if (name === 'linkedin') {
@@ -23,17 +26,15 @@ function Icon({ name }: { name: 'linkedin' | 'email' | 'phone' }) {
     )
   }
 
-  return (
-    <svg {...common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path
-        d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5L16 12l4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3.5 5.2 2 2 0 0 1 5.5 3Z"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
 }
 
 export function Footer() {
+  const pathname = usePathname()
+
+  // The résumé has its own focused contact CTA, so a global second footer
+  // would duplicate the call to action immediately below it.
+  if (pathname === '/resume') return null
+
   return (
     <footer className="relative z-content px-4 py-12 md:px-8 md:py-20">
       <Reveal className="mx-auto max-w-shell text-center">
@@ -43,7 +44,7 @@ export function Footer() {
           href="/resume"
           className="group mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-full border-2 border-plum-900 px-7 py-3 font-bebas text-xl uppercase tracking-[1.6px] text-plum-900 transition-colors duration-300 ease-signature hover:bg-plum-900 hover:text-canvas"
         >
-          View résumé
+          View resume
           <span
             aria-hidden
             className="transition-transform duration-fast ease-signature group-hover:translate-x-1"
@@ -69,7 +70,7 @@ export function Footer() {
         </ul>
 
         <p className="mt-8 font-serif text-fine text-plum-500">
-          © {profile.name} {new Date().getFullYear()}. Built with Next.js.
+          © {profile.name} {new Date().getFullYear()}. Built with Codex.
         </p>
       </Reveal>
     </footer>

@@ -2,6 +2,8 @@ import { Hero } from '@/components/Hero'
 import { ProjectRow } from '@/components/ProjectRow'
 import { projects } from '@/content/projects'
 
+const homeProjects = projects
+
 export default function HomePage() {
   return (
     <>
@@ -16,7 +18,7 @@ export default function HomePage() {
         <h2 className="sr-only">Selected work</h2>
 
         <div className="mx-auto max-w-shell px-6 md:px-8">
-          {projects.map((project, i) => (
+          {homeProjects.map((project, i) => (
             <ProjectRow key={project.slug} project={project} flip={i % 2 === 1} />
           ))}
         </div>

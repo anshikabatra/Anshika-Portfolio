@@ -9,7 +9,7 @@ import type { Profile } from './types'
  */
 export const profile: Profile = {
   name: 'Anshika Batra',
-  role: 'Product Designer · AI-native product generalist',
+  role: 'Product - Zomato, Masters - IIM Indore x IIT Indore',
   location: 'Delhi, India',
   availability: 'Open to Remote (Global)',
   email: 'anshikabatra99@gmail.com',
@@ -18,12 +18,11 @@ export const profile: Profile = {
 
   statement: [
     [
-      [{ text: 'Ambiguity is the ' }, { text: 'raw material', emphasis: true }, { text: ',' }],
-      [{ text: 'structure is what I ship.' }],
+      [{ text: 'I like technology for what it makes ' }, { text: 'possible.', emphasis: true }],
+      [{ text: 'I like ' }, { text: 'design', emphasis: true }, { text: ' for what it makes understandable.' }],
     ],
     [
-      [{ text: 'I build internal tools, platform products' }],
-      [{ text: 'and ' }, { text: 'AI-powered workflows', emphasis: true }, { text: '.' }],
+      [{ text: 'I work somewhere in ' }, { text: 'between.', emphasis: true }],
     ],
   ],
 
@@ -34,6 +33,5 @@ export const profile: Profile = {
       icon: 'linkedin',
     },
     { label: 'Email', href: 'mailto:anshikabatra99@gmail.com', icon: 'email' },
-    { label: 'Phone', href: 'tel:+919136401501', icon: 'phone' },
   ],
 }

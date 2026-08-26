@@ -1,223 +1,42 @@
 import type { Metadata } from 'next'
 
-import { PageHeading, SectionLabel } from '@/components/PageHeading'
-import { Reveal } from '@/components/motion/Reveal'
-import { Stagger } from '@/components/motion/Stagger'
-import {
-  accolades,
-  education,
-  experience,
-  leadership,
-  leadershipLinks,
-  skills,
-} from '@/content/experience'
 import { profile } from '@/content/profile'
 
 export const metadata: Metadata = {
-  title: 'Résumé',
-  description: `Full résumé for ${profile.name} — product design, AI-native tooling, platform products.`,
+  title: 'Resume',
+  description: `Resume for ${profile.name}.`,
   alternates: { canonical: '/resume' },
 }
 
 export default function ResumePage() {
   return (
-    <>
-      <PageHeading
-        title="Résumé"
-        lede="Product design across consumer and enterprise systems, with a bias toward internal tools and AI-assisted workflows."
-      />
+    <section className="resume-page min-h-screen px-6 pb-24 pt-36 md:px-8 md:pt-44">
+      <div className="mx-auto max-w-[744px] text-center">
+        <h1 className="font-bebas text-hero-sm uppercase text-plum-900 md:text-hero">Resume</h1>
+        <p className="mt-2 font-serif text-fine italic text-plum-500">Last updated August 2026</p>
+        <a href="/resume-assets/anshika-batra-resume.pdf" download className="resume-action mt-8">Download PDF</a>
 
-      <div className="mx-auto max-w-hero space-y-16 px-6 pb-24 md:px-0">
-        {/* Contact */}
-        <Reveal>
-          <dl className="grid gap-x-8 gap-y-3 font-serif text-copy sm:grid-cols-2">
-            <div>
-              <dt className="font-sans text-[11px] uppercase tracking-wider text-plum-500">
-                Based in
-              </dt>
-              <dd className="text-plum-900">
-                {profile.location} · {profile.availability}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-sans text-[11px] uppercase tracking-wider text-plum-500">
-                Email
-              </dt>
-              <dd>
-                <a
-                  href={`mailto:${profile.email}`}
-                  className="link-underline text-plum-900"
-                >
-                  {profile.email}
-                </a>
-              </dd>
-            </div>
-            <div>
-              <dt className="font-sans text-[11px] uppercase tracking-wider text-plum-500">
-                Phone
-              </dt>
-              <dd>
-                <a href={`tel:${profile.phone.replace(/\s/g, '')}`} className="link-underline text-plum-900">
-                  {profile.phone}
-                </a>
-              </dd>
-            </div>
-            <div>
-              <dt className="font-sans text-[11px] uppercase tracking-wider text-plum-500">
-                LinkedIn
-              </dt>
-              <dd>
-                <a
-                  href={profile.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="link-underline text-plum-900"
-                >
-                  anshika-batra
-                </a>
-              </dd>
-            </div>
-          </dl>
-        </Reveal>
+        <div className="resume-preview mt-16 overflow-hidden rounded-card border border-plum-900/10 bg-canvas shadow-media md:mt-20">
+          <iframe title="Anshika Batra resume" src="/resume-assets/anshika-batra-resume.pdf#view=FitH" className="h-[540px] w-full md:h-[740px]" />
+        </div>
 
-        {/* Experience */}
-        <section>
-          <SectionLabel>Experience</SectionLabel>
-          <Stagger className="space-y-10">
-            {experience.map((job) => (
-              <Reveal key={`${job.org}-${job.period}`} as="article">
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <h3 className="font-bebas text-2xl uppercase text-plum-900">
-                    {job.role} <span className="text-plum-500">·</span> {job.org}
-                  </h3>
-                  <span className="font-serif text-fine italic text-plum-500">
-                    {job.period}
-                  </span>
-                </div>
-                <ul className="mt-3 space-y-2">
-                  {job.bullets.map((b, i) => (
-                    <li
-                      key={i}
-                      className="prose-hang relative pl-5 font-serif text-copy text-plum-700"
-                    >
-                      <span
-                        aria-hidden
-                        className="absolute left-0 top-[0.62em] size-1.5 rounded-full bg-plum-900/25"
-                      />
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            ))}
-          </Stagger>
-        </section>
+        <p className="mt-20 font-serif text-lede-sm italic text-plum-900">Let’s work together</p>
+        <a href={`mailto:${profile.email}`} className="resume-action mt-3">Email Anshika →</a>
 
-        {/* Education */}
-        <section>
-          <SectionLabel>Education</SectionLabel>
-          <Stagger className="space-y-6">
-            {education.map((e) => (
-              <Reveal key={e.institution} as="article">
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <h3 className="max-w-[46ch] font-serif text-copy font-semibold text-plum-900">
-                    {e.institution}
-                  </h3>
-                  <span className="font-serif text-fine italic text-plum-500">
-                    {e.period}
-                  </span>
-                </div>
-                <p className="font-serif text-copy text-plum-700">
-                  {e.qualification}
-                  {e.detail && <span className="text-plum-500"> · {e.detail}</span>}
-                </p>
-                <p className="font-serif text-fine italic text-plum-500">{e.location}</p>
-              </Reveal>
-            ))}
-          </Stagger>
-        </section>
-
-        {/* Leadership */}
-        <section>
-          <SectionLabel>Leadership</SectionLabel>
-          <Stagger className="space-y-6">
-            {leadership.map((l) => {
-              const href = leadershipLinks[l.org] ?? leadershipLinks[l.role]
-              return (
-                <Reveal key={l.role} as="article">
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                    <h3 className="font-bebas text-xl uppercase text-plum-900">
-                      {l.role} <span className="text-plum-500">·</span> {l.org}
-                    </h3>
-                    <span className="font-serif text-fine italic text-plum-500">
-                      {l.period}
-                    </span>
-                  </div>
-                  <p className="prose-hang mt-1 max-w-[62ch] font-serif text-copy text-plum-700">
-                    {l.detail}
-                  </p>
-                  {href && (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`More about ${l.org}`}
-                      className="link-underline mt-1 inline-block font-serif text-fine italic text-plum-900"
-                    >
-                      More about {l.org} →
-                    </a>
-                  )}
-                </Reveal>
-              )
-            })}
-          </Stagger>
-        </section>
-
-        {/* Skills */}
-        <section>
-          <SectionLabel>Skills</SectionLabel>
-          <Stagger className="space-y-6">
-            {skills.map((g) => (
-              <Reveal key={g.label}>
-                <h3 className="font-sans text-[11px] uppercase tracking-wider text-plum-500">
-                  {g.label}
-                </h3>
-                <ul className="mt-2 flex flex-wrap gap-2">
-                  {g.items.map((s) => (
-                    <li
-                      key={s}
-                      className="rounded-full border border-plum-900/15 px-3 py-1 font-serif text-fine text-plum-700"
-                    >
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            ))}
-          </Stagger>
-        </section>
-
-        {/* Accolades */}
-        <section>
-          <SectionLabel>Accolades</SectionLabel>
-          <Reveal>
-            <ul className="space-y-2">
-              {accolades.map((a) => (
-                <li
-                  key={a}
-                  className="prose-hang relative pl-5 font-serif text-copy text-plum-700"
-                >
-                  <span
-                    aria-hidden
-                    className="absolute left-0 top-[0.62em] size-1.5 rounded-full bg-plum-900/25"
-                  />
-                  {a}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </section>
+        <ul className="mt-10 flex items-center justify-center gap-6">
+          <li>
+            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="resume-social">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.75V21h-4v-5.65c0-1.35-.03-3.08-1.9-3.08-1.9 0-2.2 1.46-2.2 2.98V21h-4V9Z" /></svg>
+            </a>
+          </li>
+          <li>
+            <a href={`mailto:${profile.email}`} aria-label="Email" className="resume-social">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2" /><path d="m3 6 9 6.5L21 6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </a>
+          </li>
+        </ul>
+        <p className="mt-8 font-serif text-fine text-plum-500">© {profile.name} 2026. Built with Codex.</p>
       </div>
-    </>
+    </section>
   )
 }

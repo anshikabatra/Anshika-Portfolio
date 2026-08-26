@@ -38,6 +38,138 @@
 }
 
 @layer components {
+  /* Figma résumé masthead: a deliberately quiet editorial field over the
+   * site's existing paper-like palette. */
+  .resume-hero {
+    background:
+      radial-gradient(circle at 18% 38%, rgb(240 211 239 / 0.78), transparent 38%),
+      radial-gradient(circle at 78% 28%, rgb(203 235 248 / 0.82), transparent 42%),
+      radial-gradient(circle at 63% 82%, rgb(249 217 222 / 0.68), transparent 40%),
+      var(--canvas);
+    border-bottom: 1px solid rgb(var(--plum-900-ch) / 0.1);
+  }
+
+  .resume-page {
+    background:
+      radial-gradient(circle at 16% 20%, rgb(240 211 239 / 0.78), transparent 30%),
+      radial-gradient(circle at 86% 15%, rgb(203 235 248 / 0.8), transparent 30%),
+      radial-gradient(circle at 66% 88%, rgb(249 217 222 / 0.74), transparent 34%);
+  }
+
+  .vip-case-study {
+    background:
+      radial-gradient(circle at 12% 8%, rgb(244 210 233 / 0.72), transparent 28%),
+      radial-gradient(circle at 88% 24%, rgb(202 231 246 / 0.7), transparent 30%),
+      radial-gradient(circle at 50% 76%, rgb(234 221 250 / 0.62), transparent 34%);
+  }
+
+  .vip-reframe,
+  .vip-impact {
+    background: rgb(255 255 255 / 0.32);
+    backdrop-filter: blur(18px);
+  }
+
+  .vip-signal,
+  .vip-team,
+  .vip-step {
+    border: 1px solid rgb(var(--plum-900-ch) / 0.14);
+    border-radius: var(--radius-md);
+    background: rgb(255 255 255 / 0.34);
+    padding: 1rem;
+    font-family: var(--font-bebas), Impact, sans-serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .vip-operator {
+    align-self: center;
+    font-family: var(--font-bebas), Impact, sans-serif;
+    font-size: 2rem;
+    color: var(--plum-500);
+    text-align: center;
+  }
+
+  .vip-team-active {
+    border-color: var(--plum-900);
+    background: var(--plum-900);
+    color: var(--canvas);
+  }
+
+  .vip-step {
+    display: flex;
+    min-height: 7rem;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .vip-step span {
+    font-family: var(--font-crimson), Georgia, serif;
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--plum-500);
+  }
+
+  .resume-action {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--plum-900);
+    border-radius: var(--radius-full);
+    padding: 0.5rem 1.5rem;
+    font-family: var(--font-bebas), Impact, sans-serif;
+    font-size: 1.125rem;
+    letter-spacing: 1.3px;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--plum-900);
+    transition: background-color var(--dur-fast) var(--ease-signature), color var(--dur-fast) var(--ease-signature);
+  }
+
+  .resume-action:hover,
+  .resume-action:focus-visible {
+    background: var(--plum-900);
+    color: var(--canvas);
+  }
+
+  .resume-social {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    color: var(--plum-500);
+    transition: color var(--dur-fast) var(--ease-signature);
+  }
+
+  .resume-social:hover,
+  .resume-social:focus-visible {
+    color: var(--plum-900);
+  }
+
+  .resume-social svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* A white, painted light trail beneath the page content. */
+  .cursor-glow {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  @media (pointer: coarse) {
+    .cursor-glow {
+      display: none;
+    }
+  }
+
   /**
    * Layer 3 — gradient-clipped emphasis text.
    * Two stacked backgrounds: a soft periwinkle bloom over a long linear sweep.
@@ -113,11 +245,56 @@
   .link-underline:focus-visible {
     background-size: 100% 1px;
   }
+
+  /* Header links are clean at rest. The underline appears only while a link
+   * is hovered or keyboard-focused; the selected route uses the hero's exact
+   * aurora treatment instead of an underline. */
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link::after {
+    position: absolute;
+    right: 0;
+    bottom: 8px;
+    left: 0;
+    height: 1px;
+    content: '';
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--dur-fast) var(--ease-signature);
+  }
+
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .nav-link-active {
+    background-image:
+      radial-gradient(circle at 50% 38%, rgba(138, 138, 181, 0.5) 0%, rgba(138, 138, 181, 0) 26%),
+      linear-gradient(108deg, var(--aurora-violet) 0%, var(--aurora-orchid) 22%, var(--aurora-steel) 48%, var(--aurora-rose) 70%, var(--aurora-violet) 100%);
+    background-size: 180% 180%, 240% 100%;
+    background-position: 50% center, 18% center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    /* Override the shared text-plum-900 utility, which is emitted in the
+     * later Tailwind utilities layer. */
+    color: transparent !important;
+    animation: auroraText var(--loop-text) ease-in-out infinite;
+  }
+
+  .nav-link-active::after {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .aurora-em,
-  .aurora-depth {
+  .aurora-depth,
+  .nav-link-active {
     animation: none !important;
   }
 }

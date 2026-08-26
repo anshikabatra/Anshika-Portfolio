@@ -3,7 +3,7 @@ export type AccentKey = 'steel' | 'orchid' | 'rose' | 'violet'
 export interface SocialLink {
   label: string
   href: string
-  icon: 'linkedin' | 'email' | 'phone'
+  icon: 'linkedin' | 'email'
 }
 
 export interface Profile {
@@ -33,7 +33,12 @@ export type StatementLine = StatementSegment[]
 /** The visual that sits in a project's media column. */
 export type ProjectVisual =
   | { kind: 'browser'; url: string; mock: MockKey }
+  | { kind: 'browser-video'; url: string; href?: string; src: string; aspectClassName?: string }
+  | { kind: 'browser-video-playlist'; url: string; sources: string[] }
+  | { kind: 'image'; src: string; alt: string; aspectClassName?: string }
   | { kind: 'phone'; mock: MockKey }
+  | { kind: 'phone-video'; src: string }
+  | { kind: 'phone-video-playlist'; sources: string[]; clipDurationSeconds?: number }
 
 export type MockKey =
   | 'token-mapper'

@@ -37,12 +37,6 @@ function delay(step: number): React.CSSProperties {
 export function Hero() {
   return (
     <section className="relative flex min-h-screen flex-col justify-center overflow-hidden px-6 sm:px-10 md:px-16">
-      {/* Layer 2 of the background system — drifts and blurs, never touches text. */}
-      <div
-        aria-hidden
-        className="aurora-depth pointer-events-none absolute inset-0 animate-veil-in"
-      />
-
       <div className="relative z-content mx-auto w-full max-w-hero text-left">
         <div className="mb-[72px] sm:mb-12 md:mb-16">
           <h1
@@ -70,12 +64,6 @@ export function Hero() {
           ))}
         </div>
 
-        <p
-          style={delay(2 + profile.statement.length)}
-          className="mt-12 animate-hero-in font-serif text-fine text-plum-500"
-        >
-          {profile.location} · {profile.availability}
-        </p>
       </div>
     </section>
   )

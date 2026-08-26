@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Bebas_Neue, Crimson_Text } from 'next/font/google'
 
 import { Footer } from '@/components/Footer'
+import { CursorGlow } from '@/components/CursorGlow'
 import { ScrollProgress } from '@/components/ScrollProgress'
 import { SiteHeader } from '@/components/SiteHeader'
 import { SmoothScroll } from '@/components/SmoothScroll'
@@ -104,6 +105,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </noscript>
       </head>
       <body className="grain min-h-screen antialiased">
+        <CursorGlow />
         <script
           type="application/ld+json"
           // Serialised from a local constant — no user input reaches this.

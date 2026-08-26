@@ -14,8 +14,8 @@ import { cn } from '@/lib/utils'
  */
 const NAV = [
   { label: 'Home', href: '/', aria: 'Home' },
-  { label: 'More', href: '/more', aria: 'More work' },
-  { label: 'Resume', href: '/resume', aria: 'Résumé' },
+  { label: 'Projects', href: '/projects', aria: 'Projects' },
+  { label: 'Resume', href: '/resume', aria: 'Resume' },
   { label: 'Email', href: `mailto:${profile.email}`, aria: `Email ${profile.name}` },
 ] as const
 
@@ -61,12 +61,12 @@ export function SiteHeader() {
                     aria-label={item.aria}
                     aria-current={active ? 'page' : undefined}
                     className={cn(
-                      'inline-flex min-h-[44px] items-center whitespace-nowrap border-b-2 font-bebas',
+                      'nav-link inline-flex min-h-[44px] items-center whitespace-nowrap font-bebas',
                       'text-sm uppercase tracking-[1.6px] text-plum-900',
                       'transition-colors duration-300 ease-signature sm:text-lg md:text-navlink',
                       active
-                        ? 'border-plum-900'
-                        : 'border-transparent hover:border-plum-900/40 hover:text-plum-700'
+                        ? 'nav-link-active'
+                        : 'hover:text-plum-700'
                     )}
                   >
                     {item.label}
