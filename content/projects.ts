@@ -19,8 +19,9 @@ export const projects: Project[] = [
     visual: {
       kind: 'phone-video-playlist',
       sources: [
-        '/ai-chatbot.mov',
+        '/zomato-bytes.mov',
         '/vip-1.mov',
+        '/ai-chatbot.mov',
         '/adaptive-surveys-1.mov',
         '/apple-pay.mov',
         '/data-privacy-flows.mov',

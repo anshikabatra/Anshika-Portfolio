@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { type ComponentProps, useEffect, useRef, useState } from 'react'
 
 import { BrowserFrame, PhoneFrame } from '@/components/DeviceFrame'
 import { CloudPortal } from '@/components/mocks/CloudPortal'
@@ -18,6 +18,32 @@ const MOCKS: Record<MockKey, () => React.JSX.Element> = {
   'cloud-portal': CloudPortal,
   'product-copilot': ProductCopilot,
   'pages-app': PagesApp,
+}
+
+/** Avoid downloading off-screen recordings during the initial page load. */
+function DeferredVideo({ src, ...props }: ComponentProps<'video'>) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [shouldLoad, setShouldLoad] = useState(false)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '300px 0px' }
+    )
+
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
+
+  return <video ref={videoRef} {...props} src={shouldLoad ? src : undefined} preload="metadata" />
 }
 
 /** Plays related recordings as one continuous sequence. */
@@ -42,7 +68,7 @@ function VideoPlaylist({
   }, [clipDurationSeconds, sourceIndex])
 
   return (
-    <video
+    <DeferredVideo
       key={sources[sourceIndex]}
       className={className}
       src={sources[sourceIndex]}
@@ -85,7 +111,7 @@ function Visual({ project }: { project: Project }) {
         href={project.visual.href}
         aspectClassName={project.visual.aspectClassName ?? 'aspect-video'}
       >
-        <video
+        <DeferredVideo
           className="size-full object-cover"
           src={project.visual.src}
           autoPlay
@@ -113,7 +139,7 @@ function Visual({ project }: { project: Project }) {
   if (project.visual.kind === 'phone-video') {
     return (
       <PhoneFrame>
-        <video
+        <DeferredVideo
           className="size-full object-cover"
           src={project.visual.src}
           autoPlay
